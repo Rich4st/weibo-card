@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import HelloWorldVue from '@/components/HelloWorld.vue'
+import Layout from '@/components/Layout/index.vue'
 </script>
 
 <template>
-  <h1 class="text-3xl">
-    HELLO VUE3
-    <HelloWorldVue />
-  </h1>
+  <Layout />
 </template>
 
 <style scoped>
-
 </style>
