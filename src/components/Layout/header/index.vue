@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '../../../store/index'
 
 const darkUrl = 'http://182.61.149.102/dark-mode.svg'
 const lightUrl = 'http://182.61.149.102/light-mode.svg'
 const imgSrc = ref<string>('http://182.61.149.102/dark-mode.svg')
+const main = useMainStore()
 
 /* toggleDarkMode */
 const toggleDarkMode = () => {
   const html = document.querySelector('html')
   html?.classList.toggle('dark')
   imgSrc.value === darkUrl ? (imgSrc.value = lightUrl) : (imgSrc.value = darkUrl)
+}
+
+/* 监听输入框变化 */
+const handleLinkInputChange = (payload: Event) => {
+  main.setWeiboUrl(payload!.target!.value)
 }
 </script>
 
@@ -32,6 +40,7 @@ const toggleDarkMode = () => {
             type="text"
             class=" h-12 mt-1 px-3 py-2 bg-white border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
             placeholder="paste your weibo link here"
+            @change="handleLinkInputChange"
           >
         </div>
 

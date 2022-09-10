@@ -1,4 +1,35 @@
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
+import axios from 'axios'
+import { useMainStore } from '../../../store/index'
+import type { IpageInfo, IprofileInfo } from './types'
+
+const main = useMainStore()
+const url = ref<string>('')
+const profileInfo = ref<IprofileInfo>({})
+const pageInfo = ref<IpageInfo>({})
+const weiboText = ref<string>('')
+const fullContent = ref<any>({})
+
+/* 监听粘贴的url变化 */
+main.$subscribe(async (mutation, state) => {
+  url.value = state.weiboUrl
+  const params = {
+    id: url.value.split('/')[4],
+    url: url.value,
+  }
+  let { data } = await axios.get('http://182.61.149.102:3000/api/list', { params })
+  if (data.code === 200) {
+    data = data.data.list
+    fullContent.value = data
+    data.page_info ? weiboText.value = data.text_raw : weiboText.value = data.text
+    const { user } = data
+    const { page_info } = data
+    profileInfo.value = user
+    pageInfo.value = page_info
+    console.log('data', fullContent.value)
+  }
+})
 </script>
 
 <template>
@@ -12,34 +43,36 @@
       >
         <div id="top" class="flex">
           <div id="avatar" class="h-20">
-            <img class="rounded-full" src="https://tvax4.sinaimg.cn/crop.0.0.1328.1328.50/95fd044bly8fgzeefso1nj210w10w797.jpg?KID=imgbed,tva&Expires=1662719684&ssig=l4FPMN39PQ" alt="">
+            <img class="rounded-full" :src="profileInfo.profile_image_url" alt="">
           </div>
           <div id="user-profile" class="ml-3">
             <p class="font-black text-xl">
-              拳天下李景亮
+              {{ profileInfo.screen_name }}
             </p>
             <p class=" text-gray-400 text-ml">
-              @lijingliang
+              {{ fullContent.region_name }}
             </p>
           </div>
           <div id="weibo-log" class=" absolute right-10">
-            <img src="https://tvax4.sinaimg.cn/crop.0.0.1328.1328.50/95fd044bly8fgzeefso1nj210w10w797.jpg?KID=imgbed,tva&Expires=1662719684&ssig=l4FPMN39PQ" alt="">
+            <img src="http://182.61.149.102/weibo.svg" alt="">
           </div>
         </div>
         <div id="center" class="flex-1">
-          <span class=" text-xl font-bold">只要你打不倒我，倒下的就是你！#李景亮vs弗格森##为家战斗李景亮##就是李景亮#</span>
+          <span class=" text-xl font-bold flex" v-html="weiboText" />
         </div>
         <div id="bottom">
-          <span class=" text-gray-500 font-thin">02:39 PM·9 Sep, 2022</span>
+          <span class=" text-gray-500 font-thin">
+            {{ fullContent.created_at }}
+          </span>
           <div class=" mt-2">
             <p class="text-gray-500 inline-block">
-              <span class=" text-black">125</span>replies
+              <span class=" text-black">{{ fullContent.comments_count }}</span> replies
             </p>
             <p class="text-gray-500 inline-block pl-3">
-              <span class=" text-black">125</span>replies
+              <span class=" text-black">{{ fullContent.reposts_count }}</span> shares
             </p>
             <p class="text-gray-500 inline-block pl-3">
-              <span class=" text-black">125</span>replies
+              <span class=" text-black">{{ fullContent.attitudes_count }}</span> likes
             </p>
           </div>
         </div>
