@@ -8,12 +8,21 @@ import type { IpageInfo, IprofileInfo } from './types'
 
 const main = useMainStore()
 const url = ref<string>('')
-const profileInfo = ref<IprofileInfo>({})
+const profileInfo = ref<IprofileInfo>({
+  screen_name: '拳天下李景亮',
+  profile_image_url: 'https://tvax4.sinaimg.cn/crop.0.0.1328.1328.50/95fd044bly8fgzeefso1nj210w10w797.jpg?KID=imgbed,tva&Expires=1662895357&ssig=gCVapJIFGz',
+})
 const pageInfo = ref<IpageInfo>({})
 const weiboText = ref<string>('')
 const picUrl = ref<string>('')
-const videoPic = ref<string>('')
-const fullContent = ref<any>({})
+const videoPic = ref<string>('http://wx4.sinaimg.cn/orj480/95fd044bly1h5z6fec1xtj21hc0u04dq.jpg')
+const fullContent = ref<any>({
+  created_at: 'Thu Sep 08 14:39:40 +0800 2022',
+  region_name: '发布于 北京',
+  comments_count: 60,
+  attitudes_count: 418,
+  reposts_count: 34,
+})
 const cardGradient = ref<string>('background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);') // 卡片背景渐变色
 const isCardDark = ref<boolean>(false) // 卡片是否开启暗黑模式
 const isCardResponse = ref<boolean>(true) // 是否显示微博response
@@ -71,7 +80,7 @@ main.$subscribe(async (mutation, state) => {
         style="backdrop-filter: blur(20px);min-height: 18rem;"
       >
         <div id="top" class="flex">
-          <div id="avatar" class="sm:h-20 h-12">
+          <div v-if="profileInfo.profile_image_url" id="avatar" class="sm:h-20 h-12">
             <img
               class="rounded-full w-10 h-10 sm:w-fit sm:h-fit" :src="profileInfo.profile_image_url"
               altext-gray-100t=""
