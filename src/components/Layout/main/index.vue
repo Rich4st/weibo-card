@@ -15,6 +15,8 @@ const picUrl = ref<string>('')
 const videoPic = ref<string>('')
 const fullContent = ref<any>({})
 const cardGradient = ref<string>('background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);') // 卡片背景渐变色
+const isCardDark = ref<boolean>(false) // 卡片是否开启暗黑模式
+const isCardResponse = ref<boolean>(true) // 是否显示微博response
 
 /* 生成图片 */
 const handleCratePic = () => {
@@ -54,13 +56,6 @@ main.$subscribe(async (mutation, state) => {
     console.log('data', fullContent.value)
   }
 })
-
-/* 背景调色盘 */
-const handleColorPalette = () => {
-  const paletteDialog = document.querySelector('#palette') as HTMLElement
-  // paletteDialog.classList.toggle('hidden')
-  console.log('palette')
-}
 </script>
 
 <template>
@@ -72,15 +67,19 @@ const handleColorPalette = () => {
       :style="cardGradient"
     >
       <div
-        class=" sm:w-3/5 sm:h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col"
+        :class="!isCardDark ? ' sm:w-3/5 sm:h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col' : ' sm:w-3/5 sm:h-fit bg-black m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col'"
         style="backdrop-filter: blur(20px);min-height: 18rem;"
       >
         <div id="top" class="flex">
           <div id="avatar" class="sm:h-20 h-12">
-            <img class="rounded-full w-10 h-10 sm:w-fit sm:h-fit" :src="profileInfo.profile_image_url" alt="">
+            <img
+              class="rounded-full w-10 h-10 sm:w-fit sm:h-fit" :src="profileInfo.profile_image_url"
+              altext-gray-100t=""
+            >
           </div>
+          <!-- 微博作者名称 light -->
           <div id="user-profile" class="ml-3">
-            <p class="font-black text-sm sm:text-xl">
+            <p :class="!isCardDark ? 'font-black text-sm sm:text-xl' : 'font-black text-white text-sm sm:text-xl'">
               {{ profileInfo.screen_name }}
             </p>
             <p class=" text-gray-400 text-xs sm:text-base">
@@ -92,25 +91,37 @@ const handleColorPalette = () => {
           </div>
         </div>
         <div id="center" class="flex-1">
-          <div class=" sm:text-xl text-sm font-bold flex justify-start items-center" v-html="weiboText" />
+          <div
+            :class="!isCardDark ? ' sm:text-xl text-sm font-bold flex justify-start items-center' : ' sm:text-xl text-gray-200 text-sm font-bold flex justify-start items-center'"
+            v-html="weiboText"
+          />
           <div>
             <img v-if="picUrl !== ''" class=" rounded-xl" :src="picUrl" alt="">
             <img v-if="videoPic !== ''" class=" rounded-xl" :src="videoPic" alt="">
           </div>
         </div>
-        <div id="bottom">
-          <span class=" text-gray-500 font-thin text-sm sm:text-base">
+        <div id="bottom" class=" pt-3">
+          <span
+            :class="!isCardDark ? 'text-gray-500 font-thin text-sm sm:text-base' : 'text-gray-800 font-thin text-sm sm:text-base' "
+          >
             {{ fullContent.created_at }}
           </span>
-          <div v-if="profileInfo.screen_name" class=" mt-2">
-            <p class="text-gray-500 inline-block text-sm sm:text-base">
-              <span class=" text-black">{{ fullContent.comments_count }}</span> replies
+          <div v-if="profileInfo.screen_name && isCardResponse" class=" mt-2">
+            <p
+              :class="!isCardDark ? 'text-gray-500 inline-block text-sm sm:text-base' : 'text-gray-500 inline-block text-sm sm:text-base'"
+            >
+              <span :class="!isCardDark ? 'text-black' : 'text-gray-100'">{{ fullContent.comments_count }}</span>
+              replies
             </p>
-            <p class="text-gray-500 inline-block pl-3 text-sm sm:text-base">
-              <span class=" text-black">{{ fullContent.reposts_count }}</span> shares
+            <p
+              :class="!isCardDark ? 'text-gray-500 inline-block text-sm sm:text-base ml-3' : 'text-gray-500 inline-block text-sm sm:text-base ml-3'"
+            >
+              <span :class="!isCardDark ? 'text-black' : 'text-gray-100'">{{ fullContent.reposts_count }}</span> shares
             </p>
-            <p class="text-gray-500 inline-block pl-3 text-sm sm:text-base">
-              <span class=" text-black">{{ fullContent.attitudes_count }}</span> likes
+            <p
+              :class="!isCardDark ? 'text-gray-500 inline-block text-sm sm:text-base ml-3' : 'text-gray-500 inline-block text-sm sm:text-base ml-3'"
+            >
+              <span :class="!isCardDark ? 'text-black' : 'text-gray-100'">{{ fullContent.attitudes_count }}</span> likes
             </p>
           </div>
         </div>
@@ -125,12 +136,11 @@ const handleColorPalette = () => {
           <li
             id="color-palette"
             class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 overflow-hidden hover:cursor-pointer block "
-            @click="handleColorPalette"
           >
             <Popper hover arrow placement="top">
               <p class="sm:text-lg flex flex-col">
                 <span>🎨</span>
-                <span>Color</span>
+                <span>调色盘</span>
               </p>
               <template #content>
                 <div>
@@ -197,13 +207,19 @@ const handleColorPalette = () => {
               </template>
             </Popper>
           </li>
-          <li class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer ">
+          <li
+            class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer "
+            @click="isCardDark = !isCardDark"
+          >
             <p class="sm:text-xl">
               &#9728;
             </p>
-            Card
+            主题
           </li>
-          <li class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer ">
+          <li
+            class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer "
+            @click="isCardResponse = !isCardResponse"
+          >
             <p class=" sm:text-xl">
               &#128150;
             </p>
