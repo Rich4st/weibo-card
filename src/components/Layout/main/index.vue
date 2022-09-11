@@ -67,7 +67,7 @@ main.$subscribe(async (mutation, state) => {
       :style="cardGradient"
     >
       <div
-        :class="!isCardDark ? ' sm:w-3/5 sm:h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col' : ' sm:w-3/5 sm:h-fit bg-black m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col'"
+        :class="!isCardDark ? ' sm:w-3/5 sm:h-fit bg-white m-auto rounded-3xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col' : ' sm:w-3/5 sm:h-fit bg-black m-auto rounded-3xl shadow-lg bg-opacity-30 bg-clip-padding p-6 sm:p-10 flex flex-col'"
         style="backdrop-filter: blur(20px);min-height: 18rem;"
       >
         <div id="top" class="flex">
@@ -156,15 +156,15 @@ main.$subscribe(async (mutation, state) => {
                     <li class=" w-1/5 box-content rounded-sm h-10">
                       <button
                         class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
-                        style="background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);"
-                        @click="cardGradient = 'background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);'"
+                        style="background-image: linear-gradient(-225deg, #7742B2 0%, #F180FF 52%, #FD8BD9 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #7742B2 0%, #F180FF 52%, #FD8BD9 100%);'"
                       />
                     </li>
                     <li class=" w-1/5 box-content rounded-sm h-10">
                       <button
                         class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
-                        style="background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);"
-                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);'"
+                        style="background-image: linear-gradient(345deg, #f9d423 0%, #ff4e50 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(345deg, #f9d423 0%, #ff4e50 100%);'"
                       />
                     </li>
                     <li class=" w-1/5 box-content border border-transparent rounded-sm h-10">
@@ -184,15 +184,15 @@ main.$subscribe(async (mutation, state) => {
                     <li class=" w-1/5 box-content rounded-sm h-10">
                       <button
                         class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
-                        style="background-image: linear-gradient(345deg, #d7d2cc 0%, #304352 100%);"
-                        @click="cardGradient = 'background-image: linear-gradient(345deg, #d7d2cc 0%, #304352 100%);'"
+                        style="background: linear-gradient(to top, rgba(210, 153, 194, 0.5), rgba(254, 249, 215, 0.5))"
+                        @click="cardGradient = 'background: linear-gradient(to top, rgba(210, 153, 194, 0.5), rgba(254, 249, 215, 0.5))'"
                       />
                     </li>
                     <li class=" w-1/5 box-content rounded-sm h-10">
                       <button
                         class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
                         style="background-image: linear-gradient(-225deg, #69EACB 0%, #EACCF8 48%, #6654F1 100%);"
-                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #69EACB 0%, #EACCF8 48%, #6654F1 100%);'"
+                        @click="cardGradient = 'background-image: linear-gradient(345deg, #69EACB 0%, #EACCF8 48%, #6654F1 100%);'"
                       />
                     </li>
                     <li class=" w-1/5 box-content rounded-sm h-10">
