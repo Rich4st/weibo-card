@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import html2canvas from 'html2canvas'
+import Popper from 'vue3-popper'
 import { useMainStore } from '../../../store/index'
 import type { IpageInfo, IprofileInfo } from './types'
 
@@ -13,6 +14,7 @@ const weiboText = ref<string>('')
 const picUrl = ref<string>('')
 const videoPic = ref<string>('')
 const fullContent = ref<any>({})
+const cardGradient = ref<string>('background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);') // 卡片背景渐变色
 
 /* 生成图片 */
 const handleCratePic = () => {
@@ -52,13 +54,22 @@ main.$subscribe(async (mutation, state) => {
     console.log('data', fullContent.value)
   }
 })
+
+/* 背景调色盘 */
+const handleColorPalette = () => {
+  const paletteDialog = document.querySelector('#palette') as HTMLElement
+  // paletteDialog.classList.toggle('hidden')
+  console.log('palette')
+}
 </script>
 
 <template>
   <main class="px-4 py-8 mx-auto sm:max-h-96 max-w-screen-xl sm:py-0 sm:px-6 lg:px-8 w-full h-full">
+    <!-- 卡片界面 -->
     <div
-      id="capture" class="sm:w-full sm:h-auto p-10 sm:p-10 drop-shadow-lg rounded-2xl bg-opacity-30 flex justify-center items-center"
-      style="background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 100%);"
+      id="capture"
+      class="sm:w-full sm:h-auto p-10 sm:p-10 drop-shadow-lg rounded-2xl bg-opacity-30 flex justify-center items-center"
+      :style="cardGradient"
     >
       <div
         class=" sm:w-3/5 sm:h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col"
@@ -76,15 +87,15 @@ main.$subscribe(async (mutation, state) => {
               {{ fullContent.region_name }}
             </p>
           </div>
-          <div v-if="profileInfo.screen_name" id="weibo-log" class=" absolute right-10 top-4">
-            <img src="http://182.61.149.102/weibo.svg" alt="">
+          <div v-if="profileInfo.screen_name" id="weibo-log" class=" absolute right-6 top-4 sm:right-10 sm:top-4">
+            <img class=" w-8 h-8 sm:w-16 sm:h-16" src="http://182.61.149.102/weibo.svg" alt="">
           </div>
         </div>
         <div id="center" class="flex-1">
           <div class=" sm:text-xl text-sm font-bold flex justify-start items-center" v-html="weiboText" />
           <div>
-            <img v-if="picUrl !== ''" :src="picUrl" alt="">
-            <img v-if="videoPic !== ''" :src="videoPic" alt="">
+            <img v-if="picUrl !== ''" class=" rounded-xl" :src="picUrl" alt="">
+            <img v-if="videoPic !== ''" class=" rounded-xl" :src="videoPic" alt="">
           </div>
         </div>
         <div id="bottom">
@@ -105,7 +116,102 @@ main.$subscribe(async (mutation, state) => {
         </div>
       </div>
     </div>
-    <div class=" w-full sm:h-36" />
+    <!-- 工具栏界面 -->
+    <div class=" p-5 sm:w-full sm:h-36">
+      <div
+        class=" flex justify-center items-center m-auto text-center rounded-lg sm:rounded-2xl w-5/6 h-14 sm:w-2/3 sm:h-20 bg-teal-50"
+      >
+        <ul class=" w-full flex justify-around overflow-hidden">
+          <li
+            id="color-palette"
+            class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 overflow-hidden hover:cursor-pointer block "
+            @click="handleColorPalette"
+          >
+            <Popper hover arrow placement="top">
+              <p class="sm:text-lg flex flex-col">
+                <span>🎨</span>
+                <span>Color</span>
+              </p>
+              <template #content>
+                <div>
+                  <!-- 调色按钮 -->
+                  <ul class="flex flex-wrap justify-between items-center w-40">
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(135deg, #96e6a1 0%, #d4fc79 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(135deg, #96e6a1 0%, #d4fc79 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content border border-transparent rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(-225deg, #231557 0%, #44107A 29%, #FF1361 67%, #FFF800 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #231557 0%, #44107A 29%, #FF1361 67%, #FFF800 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(345deg, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(345deg, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(345deg, #d7d2cc 0%, #304352 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(345deg, #d7d2cc 0%, #304352 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(-225deg, #69EACB 0%, #EACCF8 48%, #6654F1 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #69EACB 0%, #EACCF8 48%, #6654F1 100%);'"
+                      />
+                    </li>
+                    <li class=" w-1/5 box-content rounded-sm h-10">
+                      <button
+                        class=" w-8 h-8 p-1 rounded-md outline-offset-1 focus:outline focus:outline-2 focus:outline-cyan-500"
+                        style="background-image: linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%);"
+                        @click="cardGradient = 'background-image: linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%);'"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </template>
+            </Popper>
+          </li>
+          <li class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer ">
+            <p class="sm:text-xl">
+              &#9728;
+            </p>
+            Card
+          </li>
+          <li class=" px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 hover:bg-opacity-40 hover:cursor-pointer ">
+            <p class=" sm:text-xl">
+              &#128150;
+            </p>
+            Response
+          </li>
+        </ul>
+      </div>
+    </div>
   </main>
 </template>
 
