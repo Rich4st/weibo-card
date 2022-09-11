@@ -8,4 +8,12 @@ export default defineConfig({
   resolve: {
     alias,
   },
+  base: process.env.NODE_ENV === 'production' ? './' : '/',
+  build: {
+    rollupOptions: {
+      output: {
+        footer: 'umd',
+      },
+    },
+  },
 })

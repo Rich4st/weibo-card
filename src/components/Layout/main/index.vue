@@ -55,24 +55,24 @@ main.$subscribe(async (mutation, state) => {
 </script>
 
 <template>
-  <main class="px-4 py-8 mx-auto max-w-screen-xl sm:py-12 sm:px-6 lg:px-8 w-full h-full">
+  <main class="px-4 py-8 mx-auto sm:max-h-96 max-w-screen-xl sm:py-0 sm:px-6 lg:px-8 w-full h-full">
     <div
-      id="capture" class="w-full h-4/5 drop-shadow-lg rounded-2xl bg-opacity-30 flex justify-center items-center"
+      id="capture" class="sm:w-full sm:h-auto p-10 sm:p-10 drop-shadow-lg rounded-2xl bg-opacity-30 flex justify-center items-center"
       style="background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 100%);"
     >
       <div
-        class=" w-3/5 h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-10 flex flex-col"
+        class=" sm:w-3/5 sm:h-fit bg-white m-auto rounded-xl shadow-lg bg-opacity-20 bg-clip-padding p-6 sm:p-10 flex flex-col"
         style="backdrop-filter: blur(20px);min-height: 18rem;"
       >
         <div id="top" class="flex">
-          <div id="avatar" class="h-20">
-            <img class="rounded-full" :src="profileInfo.profile_image_url" alt="">
+          <div id="avatar" class="sm:h-20 h-12">
+            <img class="rounded-full w-10 h-10 sm:w-fit sm:h-fit" :src="profileInfo.profile_image_url" alt="">
           </div>
           <div id="user-profile" class="ml-3">
-            <p class="font-black text-xl">
+            <p class="font-black text-sm sm:text-xl">
               {{ profileInfo.screen_name }}
             </p>
-            <p class=" text-gray-400 text-ml">
+            <p class=" text-gray-400 text-xs sm:text-base">
               {{ fullContent.region_name }}
             </p>
           </div>
@@ -81,32 +81,31 @@ main.$subscribe(async (mutation, state) => {
           </div>
         </div>
         <div id="center" class="flex-1">
-          <div class=" text-xl font-bold flex justify-start items-center" v-html="weiboText" />
+          <div class=" sm:text-xl text-sm font-bold flex justify-start items-center" v-html="weiboText" />
           <div>
             <img v-if="picUrl !== ''" :src="picUrl" alt="">
             <img v-if="videoPic !== ''" :src="videoPic" alt="">
           </div>
         </div>
         <div id="bottom">
-          <span class=" text-gray-500 font-thin">
+          <span class=" text-gray-500 font-thin text-sm sm:text-base">
             {{ fullContent.created_at }}
           </span>
           <div v-if="profileInfo.screen_name" class=" mt-2">
-            <p class="text-gray-500 inline-block">
+            <p class="text-gray-500 inline-block text-sm sm:text-base">
               <span class=" text-black">{{ fullContent.comments_count }}</span> replies
             </p>
-            <p class="text-gray-500 inline-block pl-3">
+            <p class="text-gray-500 inline-block pl-3 text-sm sm:text-base">
               <span class=" text-black">{{ fullContent.reposts_count }}</span> shares
             </p>
-            <p class="text-gray-500 inline-block pl-3">
+            <p class="text-gray-500 inline-block pl-3 text-sm sm:text-base">
               <span class=" text-black">{{ fullContent.attitudes_count }}</span> likes
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div class=" w-full h-44">
-    </div>
+    <div class=" w-full sm:h-36" />
   </main>
 </template>
 

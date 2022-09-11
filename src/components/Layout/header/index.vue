@@ -16,16 +16,16 @@ const toggleDarkMode = () => {
 }
 
 /* 监听输入框变化 */
-const handleLinkInputChange = (payload: Event) => {
+const handleLinkInputChange = (payload: any) => {
   main.setWeiboUrl(payload!.target!.value)
 }
 </script>
 
 <template>
   <header>
-    <div class=" py-8 mx-auto max-w-screen-xl sm:py-12 sm:px-6 lg:px-8">
-      <div class="sm:justify-between sm:items-center sm:flex">
-        <div class="text-center sm:text-left">
+    <div class=" py-8 mx-auto max-w-screen-xl sm:py-4 sm:px-6 lg:px-8">
+      <div class="flex sm:justify-between sm:items-center sm:flex">
+        <div class="text-center sm:text-left hidden sm:block ">
           <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-300">
             WeiCarddy!
           </h1>
@@ -35,7 +35,7 @@ const handleLinkInputChange = (payload: Event) => {
           </p>
         </div>
 
-        <div class=" w-3/6 h-full">
+        <div class=" w-3/6 h-full flex-1 pl-6">
           <input
             type="text"
             class=" h-12 mt-1 px-3 py-2 bg-white border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
@@ -45,7 +45,7 @@ const handleLinkInputChange = (payload: Event) => {
         </div>
 
         <div class="flex flex-col mt-4 gap-4 sm:flex-row sm:mt-0 sm:items-center">
-          <img src="../../../assets/icons/question-mark.svg" class=" w-6 h-6 hover:cursor-pointer" alt="">
+          <img src="../../../assets/icons/question-mark.svg" class=" w-6 h-6 hover:cursor-pointer hidden sm:block" alt="">
 
           <img :src="imgSrc" class=" hover:cursor-pointer" alt="" @click="toggleDarkMode">
         </div>

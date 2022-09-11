@@ -6,7 +6,7 @@ import Footer from './footer/index.vue'
 </script>
 
 <template>
-  <div class="flex flex-col h-screen bg-slate-300 dark:bg-slate-900">
+  <div class="flex flex-col h-screen sm:h-screen sm:max-h-screen bg-slate-300 dark:bg-slate-900">
     <div class="header">
       <Header />
     </div>
